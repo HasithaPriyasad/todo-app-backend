@@ -1,9 +1,7 @@
-// src/services/TaskService.ts
 import { randomUUID } from "crypto";
 import { ITask, Task } from "../models/task.model";
-import { taskRepository } from "../repositories/task.repository"; 
-import { TaskStatus } from "../enums/task-status.enum"; 
-import { CreateTaskDTO } from "../dtos/create-task.dot";
+import { taskRepository } from "../repositories/task.repository";
+import { CreateTaskDTO } from "../dtos/create-task.dto";
 
 class TaskService {
     createTask({title, status }: CreateTaskDTO):ITask {
