@@ -11,6 +11,10 @@ class TaskController {
     getAllTasks(req: Request, res: Response, next: NextFunction): void {
         handle(req, res, next, taskService.getAllTasks, httpStatus.OK);
     }
+
+    deleteTask(req: Request< { id: string }, {}, {}>, res: Response, next: NextFunction): void { 
+        handle(req, res, next, taskService.deleteTask, httpStatus.NO_CONTENT);
+    }
 }
 
 export const taskController = new TaskController();
