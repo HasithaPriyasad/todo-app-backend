@@ -19,3 +19,27 @@ describe('TaskService', function () {
             expect(taskRepository['tasks']).to.have.lengthOf(1);
         });
     });
+
+    describe('getAllTasks', function () {
+        it('should return all tasks', function () {
+            taskRepository.createTask({
+                id: '1',
+                title: 'Task 1',
+                status: TaskStatus.NOTDONE,
+            });
+    
+            taskRepository.createTask({
+                id: '2',
+                title: 'Task 2',
+                status: TaskStatus.DONE,
+            });
+    
+            const taskList = taskService.getAllTasks();
+            expect(taskList[0]).to.have.property('id');
+            expect(taskList[0].title).to.equal('Task 1');
+            expect(taskList[1].title).to.equal('Task 2');
+            expect(taskList[0].status).to.equal(TaskStatus.NOTDONE);
+            expect(taskList).to.have.lengthOf(2);
+        });
+    });
+});
