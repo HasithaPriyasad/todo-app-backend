@@ -42,4 +42,43 @@ describe('TaskService', function () {
             expect(taskList).to.have.lengthOf(2);
         });
     });
+
+    describe('deleteTask', function () {
+        it('should delete the given task', function () {
+            taskRepository.createTask({
+                id: '1',
+                title: 'Task 1',
+                status: TaskStatus.NOTDONE,
+            });
+    
+            taskRepository.createTask({
+                id: '2',
+                title: 'Task 2',
+                status: TaskStatus.DONE,
+            });
+    
+            expect(taskService.deleteTask({},{id: '1'})).to.be.equal(true);
+            const taskList = taskService.getAllTasks();
+            expect(taskList[0].title).to.equal('Task 2');
+            expect(taskList).to.have.lengthOf(1);
+        });
+
+        it('should throw an error with 404 when the id is not available', function () {
+            taskRepository.createTask({
+                id: '1',
+                title: 'Task 1',
+                status: TaskStatus.NOTDONE,
+            });
+    
+            taskRepository.createTask({
+                id: '2',
+                title: 'Task 2',
+                status: TaskStatus.DONE,
+            });
+    
+            const _body =  {};
+            expect(() => taskService.deleteTask(_body, { id: '3' })).to.throw('Not Found');
+            
+        });
+    });
 });

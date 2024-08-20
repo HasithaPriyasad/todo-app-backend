@@ -1,12 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
 
-type TserviceFn = (
-  body: Request['body'],
-  params: Request['body'],
-  query: Request['query']
-) => unknown
+type TserviceFn<Params = Request['params'], Body = Request['body'], Query = Request['query']> = (
+  body: Body,
+  params: Params,
+  query: Query
+) => unknown;
 
-const handle = (req: Request, res: Response, next: NextFunction, serviceFn: TserviceFn, resStatusCode: number): void => {
+const handle = <Params, Body, Query>(
+  req: Request<Params, {}, Body, Query>, 
+  res: Response, 
+  next: NextFunction, 
+  serviceFn: TserviceFn<Params, Body, Query>, 
+  resStatusCode: number
+): void => {
   try {
     const { body, params, query } = req;
     const data = serviceFn(body, params, query);
