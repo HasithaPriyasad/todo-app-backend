@@ -18,6 +18,14 @@ class TaskRepository {
         return this.tasks.length < initialLength;
     }
 
+    updateTask(id: string, task: Omit<ITask, "id" | "title">): ITask | undefined { 
+        const taskToUpdate = this.tasks.find(task => task.id === id);
+        if (taskToUpdate) {
+            taskToUpdate.status = task.status;
+        }
+        return taskToUpdate;
+    }
+
     findById(id: string): ITask | undefined {
         return this.tasks.find(task => task.id === id);
     }
