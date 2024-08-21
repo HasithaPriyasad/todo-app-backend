@@ -11,8 +11,8 @@ class TaskService {
         return taskRepository.createTask(task);
     }
 
-    getAllTasks(): ITask[] {
-        return taskRepository.findAll();
+    getAllTasks(_body: {}, _params: {}, query: {searchTerm: string | undefined}): ITask[] {
+        return taskRepository.findAll(query?.searchTerm);
     }
 
     deleteTask(_body: {},params: { id: string }): boolean {

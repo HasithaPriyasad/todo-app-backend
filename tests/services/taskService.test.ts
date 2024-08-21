@@ -34,12 +34,32 @@ describe('TaskService', function () {
                 status: TaskStatus.DONE,
             });
     
-            const taskList = taskService.getAllTasks();
+            const taskList = taskService.getAllTasks({},{},{searchTerm: undefined});
             expect(taskList[0]).to.have.property('id');
             expect(taskList[0].title).to.equal('Task 1');
             expect(taskList[1].title).to.equal('Task 2');
             expect(taskList[0].status).to.equal(TaskStatus.NOTDONE);
             expect(taskList).to.have.lengthOf(2);
+        });
+
+        it('should return all tasks related to the searchTerm', function () {
+            taskRepository.createTask({
+                id: '1',
+                title: 'Task 1',
+                status: TaskStatus.NOTDONE,
+            });
+    
+            taskRepository.createTask({
+                id: '2',
+                title: 'Task 2',
+                status: TaskStatus.DONE,
+            });
+    
+            const taskList = taskService.getAllTasks({},{},{searchTerm: 'Task 1'});
+            expect(taskList[0]).to.have.property('id');
+            expect(taskList[0].title).to.equal('Task 1');
+            expect(taskList[0].status).to.equal(TaskStatus.NOTDONE);
+            expect(taskList).to.have.lengthOf(1);
         });
     });
 
@@ -58,7 +78,7 @@ describe('TaskService', function () {
             });
     
             expect(taskService.deleteTask({},{id: '1'})).to.be.equal(true);
-            const taskList = taskService.getAllTasks();
+            const taskList = taskService.getAllTasks({},{},{searchTerm: undefined});
             expect(taskList[0].title).to.equal('Task 2');
             expect(taskList).to.have.lengthOf(1);
         });
@@ -97,7 +117,7 @@ describe('TaskService', function () {
             });
     
             const task = taskService.updateTask({status: TaskStatus.DONE},{id: '1'})
-            const taskList = taskService.getAllTasks();
+            const taskList = taskService.getAllTasks({},{},{searchTerm: undefined});
             expect(task).to.have.property('id');
             expect(task?.title).to.equal('Task 1');
             expect(task?.status).to.equal(TaskStatus.DONE);

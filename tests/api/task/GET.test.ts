@@ -37,4 +37,44 @@ describe('Task API - GET /tasks', function() {
         expect(response.body[0]).to.have.property('title', 'Task 1');
         expect(response.body[1]).to.have.property('title', 'Task 2');
     });
+
+    it('should return empty array when task title does not matched to the search term', async function() {
+        taskRepository.createTask({
+           id: '1',
+           title: 'Task 1',
+           status: TaskStatus.NOTDONE,
+       });
+
+       taskRepository.createTask({
+           id: '2',
+           title: 'Task 2',
+           status: TaskStatus.DONE,
+       });
+
+       const response = await request.get('/tasks?searchTerm=H').expect(200);
+       expect(response.body).to.be.an('array').that.has.lengthOf(0);
+   });
+
+    it('should return all the tasks that the title matched to the searchTerm', async function() {
+        taskRepository.createTask({
+           id: '1',
+           title: 'Task 1',
+           status: TaskStatus.NOTDONE,
+       });
+
+       taskRepository.createTask({
+           id: '2',
+           title: 'Task 2',
+           status: TaskStatus.DONE,
+       });
+
+       const responseOne = await request.get('/tasks?searchTerm=Task').expect(200);
+       expect(responseOne.body).to.be.an('array').that.has.lengthOf(2);
+       expect(responseOne.body[0]).to.have.property('title', 'Task 1');
+       expect(responseOne.body[1]).to.have.property('title', 'Task 2');
+
+       const responseTwo = await request.get('/tasks?searchTerm=Task 1').expect(200);
+       expect(responseTwo.body).to.be.an('array').that.has.lengthOf(1);
+       expect(responseTwo.body[0]).to.have.property('title', 'Task 1');
+   });
 });

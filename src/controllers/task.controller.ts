@@ -9,7 +9,7 @@ class TaskController {
         handle(req, res, next, taskService.createTask, httpStatus.CREATED);
     }
 
-    getAllTasks(req: Request, res: Response, next: NextFunction): void {
+    getAllTasks(req: Request<{},{},{},{searchTerm: string}>, res: Response, next: NextFunction): void {
         handle(req, res, next, taskService.getAllTasks, httpStatus.OK);
     }
 
