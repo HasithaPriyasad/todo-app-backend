@@ -8,7 +8,12 @@ class TaskRepository {
         return task;
     }
 
-    findAll(): ITask[] {
+    findAll(searchTerm: string | undefined): ITask[] {
+        if(searchTerm) {
+            return this.tasks.filter(task =>
+                task.title.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+        }
         return this.tasks;
     }
 
