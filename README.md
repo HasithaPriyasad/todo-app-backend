@@ -11,7 +11,7 @@ This is the backend of the TODO application. you can create, search, change the 
 Project was created using node.js,express.js and typescript 
 
 ```bash
-    npm install
+npm install
 ```
 02.To run the application use the following command
 
